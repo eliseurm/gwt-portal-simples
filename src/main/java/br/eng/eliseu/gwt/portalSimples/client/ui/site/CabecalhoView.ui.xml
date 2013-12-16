@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:VerticalPanel horizontalAlignment="ALIGN_CENTER" width="100%">
+			<g:Label text="Cabecalho" styleName="Grande-Label"/>
+			<g:HorizontalPanel ui:field="entrarPanel">
+				<g:Button ui:field="entrarButton">Entrar</g:Button>
+			</g:HorizontalPanel>
+			<g:HorizontalPanel ui:field="sairPanel">
+				<g:Label text="Ola, " ui:field="nomeUsuarioLabel"/>
+				<g:HTML wordWrap="true" width="20px"/>
+				<g:Button ui:field="sairButton">Sair</g:Button>
+			</g:HorizontalPanel>
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 

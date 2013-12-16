@@ -1,0 +1,30 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:VerticalPanel width="288px">
+			<g:HTML height="50px" wordWrap="true"/>
+			<g:HorizontalPanel width="100%">
+				<g:Cell verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+					<g:Label text="Usuario:" width="70px"/>
+				</g:Cell>
+				<g:TextBox ui:field="usuarioTBox" width="160px"/>
+			</g:HorizontalPanel>
+			<g:HorizontalPanel width="100%">
+				<g:Cell verticalAlignment="ALIGN_MIDDLE" horizontalAlignment="ALIGN_RIGHT">
+					<g:Label text="Senha:" width="70px"/>
+				</g:Cell>
+				<g:PasswordTextBox ui:field="senhaTBox" width="160px"/>
+			</g:HorizontalPanel>
+			<g:HTML wordWrap="true" height="20px"/>
+			<g:HorizontalPanel width="100%">
+				<g:Cell horizontalAlignment="ALIGN_CENTER">
+					<g:Button ui:field="entrarButton">Entrar</g:Button>
+				</g:Cell>
+			</g:HorizontalPanel>
+		</g:VerticalPanel>
+	</g:HTMLPanel>
+</ui:UiBinder> 
