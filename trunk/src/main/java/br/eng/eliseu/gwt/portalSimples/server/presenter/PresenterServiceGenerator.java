@@ -109,14 +109,14 @@ public class PresenterServiceGenerator extends Generator {
 				src.println("		this.recurso = injector.getPortalResource();");
 				src.println("	}");
 				src.println("");
-				src.println("	public void downloadPresenter(final PresenterCodeEnum presenterCode, final DownloadHandler handler) {");
+				src.println("	public void downloadPresenter(final PresenterMenuEnum presenterCode, final DownloadHandler handler) {");
 				src.println("		setPresenterName( presenterCode.getPresenterName() );");
 
 				src.println(ifStatement.toString());
 											
 				if(!firstIf) {
 					src.println("		else { ");
-					src.println("			handler.failure(new RuntimeException(\"Não consegui achar o presenter \"+getPresenterName()+\", verifique o nome em PresenterCodeEnum\")); ");
+					src.println("			handler.failure(new RuntimeException(\"Não consegui achar o presenter \"+getPresenterName()+\", verifique o nome em PresenterMenuEnum\")); ");
 					src.println("		}");
 				}
 				src.println("	}");
