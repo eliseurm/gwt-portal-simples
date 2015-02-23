@@ -2,8 +2,8 @@ package br.eng.eliseu.gwt.portalSimples.client.ui.site;
 
 import br.eng.eliseu.gwt.portalSimples.client.mvp.PortalResource;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.BasePresenter;
-import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterCodeEnum;
-import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterCodeEnum.TipoMenu;
+import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterMenuEnum;
+import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterMenuEnum.TipoMenu;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.view.BaseDisplay;
 import br.eng.eliseu.gwt.portalSimples.model.UsuarioAcesso;
 
@@ -36,9 +36,9 @@ public class MenuPresenter extends BasePresenter {
 	}
 	
 
-	private Integer addItemMenu(PresenterCodeEnum presenterCode, MenuBar menuParent){
+	private Integer addItemMenu(PresenterMenuEnum presenterCode, MenuBar menuParent){
 		Integer adicionados = 0;
-		for (final PresenterCodeEnum p : PresenterCodeEnum.valuesAcesso()) {
+		for (final PresenterMenuEnum p : PresenterMenuEnum.valuesAcesso()) {
 			if(p!=null && p.getTipoMenu()!=null && usuarioVisualiza(p) ){
 				// && !item.getRequerAutenticacao()
 				if (presenterCode == null) {
@@ -68,7 +68,7 @@ public class MenuPresenter extends BasePresenter {
 					}
 				} else {
 					if(p.getParentId()!=null && p.getParentId().equals(presenterCode.getId())){
-						if(p.getTipoMenu().equals(PresenterCodeEnum.TipoMenu.POPUP)){
+						if(p.getTipoMenu().equals(PresenterMenuEnum.TipoMenu.POPUP)){
 							// --- Popup
 							MenuBar subMenu = new MenuBar(true);
 							Integer add = addItemMenu(p, subMenu);
@@ -92,7 +92,7 @@ public class MenuPresenter extends BasePresenter {
 		return adicionados;
 	}
 
-	private Boolean usuarioVisualiza(PresenterCodeEnum presenterCode){
+	private Boolean usuarioVisualiza(PresenterMenuEnum presenterCode){
 		
 		if (presenterCode.getRequerAutenticacao()){
 			// --- Tela requer autenticacao
@@ -112,7 +112,7 @@ public class MenuPresenter extends BasePresenter {
 		return true;
 	}
 	
-	private void executeMenu(PresenterCodeEnum p) {
+	private void executeMenu(PresenterMenuEnum p) {
 		// --- Aciono o evento onValueChange
 		getRecursos().getPlaceManager().newPlace(p);
 	}

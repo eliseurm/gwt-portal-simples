@@ -1,8 +1,8 @@
 package br.eng.eliseu.gwt.portalSimples.client.ui;
 
 import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.Presenter;
-import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterCodeEnum;
-import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterCodeEnum.LocalDestino;
+import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterMenuEnum;
+import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterMenuEnum.LocalDestino;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -32,7 +32,7 @@ public class MainView extends Composite implements MainPresenter.Display {
 	}
 
 	
-	public void showState(Presenter presenter, PresenterCodeEnum s) {
+	public void showState(Presenter presenter, PresenterMenuEnum s) {
 		
 		if (s.getLocal().equals(LocalDestino.TOPO)){
         	mainTopo.clear();
@@ -53,9 +53,9 @@ public class MainView extends Composite implements MainPresenter.Display {
 			bodyContent.clear();
 			bodyContent.add(basePresenter.getDisplay().asWidget());
 			History.newItem(null);
-			for (PresenterCodeEnum p : PresenterCodeEnum.values()) {
+			for (PresenterMenuEnum p : PresenterMenuEnum.values()) {
 				if(p.getPresenter().getName().equals(presenter.getClassName())){
-					if(p.equals(PresenterCodeEnum.HOME)){
+					if(p.equals(PresenterMenuEnum.HOME)){
 						History.newItem(null);
 					} else {
 						History.newItem(p.getTagName());

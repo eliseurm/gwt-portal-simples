@@ -4,7 +4,7 @@ import br.eng.eliseu.gwt.portalSimples.client.handle.DownloadHandler;
 
 public class PresenterServiceImpl implements PresenterService{
 
-	public void downloadPresenter(PresenterCodeEnum presenter, DownloadHandler handler) {
+	public void downloadPresenter(PresenterMenuEnum presenter, DownloadHandler handler) {
 	}
 
 }
