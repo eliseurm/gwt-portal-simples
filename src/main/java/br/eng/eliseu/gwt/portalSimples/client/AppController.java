@@ -56,6 +56,7 @@ public class AppController implements Presenter {
 		getRecursos().getEventBus().addHandler(MainEvent.TYPE, new MainEventHandler() {
 
 			public void onMainPlace(MainEvent event) {
+				
 				PresenterMenuEnum telaDoCentro = event.getTelaDoCentro();
 				if (telaDoCentro == null) {
 					showPresenterMainAsync(PresenterMenuEnum.HOME);
