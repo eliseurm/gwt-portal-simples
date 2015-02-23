@@ -12,7 +12,7 @@
 
 	<properties>
 		<!-- Convenience property to set the GWT version -->
-		<gwtVersion>2.5.1</gwtVersion>
+		<gwtVersion>2.6.1</gwtVersion>
 		<!-- GWT needs at least java 1.5 -->
 		<webappDirectory>src/main/webapp</webappDirectory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -72,6 +72,7 @@
 
 	<build>
 		<!-- Generate compiled stuff in the folder used for developing mode -->
+		<finalName>portalSimples</finalName>
 		<outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
 
 		<plugins>
@@ -80,7 +81,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>${gwtVersion}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -95,6 +96,7 @@
 					<runTarget>PortalSimples.html</runTarget>
 					<hostedWebapp>${webappDirectory}</hostedWebapp>
 					<i18nMessagesBundle>br.eng.eliseu.gwt.portalSimples.client.Messages</i18nMessagesBundle>
+					<extraJvmArgs>-Xmx1024m -Djava.naming.factory.initial=org.eclipse.jetty.jndi.InitialContextFactory</extraJvmArgs>
 				</configuration>
 			</plugin>
 
@@ -102,7 +104,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>2.1.1</version>
+				<version>2.4</version>
 				<executions>
 					<execution>
 						<phase>compile</phase>
@@ -118,12 +120,41 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.1</version>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>1.7</source>
+					<target>1.7</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${webappDirectory}/${project.artifactId}</directory>
+						</fileset>
+						<fileset>
+							<directory>${webappDirectory}/${project.groupId}.PortalSimplesJUnit</directory>
+						</fileset>
+						<fileset>
+							<directory>${webappDirectory}/WEB-INF/deploy</directory>
+						</fileset>
+						<fileset>
+							<directory>src/main/gwt-unitCache</directory>
+						</fileset>
+						<fileset>
+							<directory>${webappDirectory}/WEB-INF/lib</directory>
+						</fileset>
+						<fileset>
+							<directory>target</directory>
+						</fileset>
+
+					</filesets>
+				</configuration>
+			</plugin>
+			
 		</plugins>
 	</build>
 

@@ -17,7 +17,7 @@ public class PresenterServiceImpl_Manual extends PresenterServiceImpl implements
   		this.recurso = injector.getPortalResource();
   	}
   
-  	public void downloadPresenter(final PresenterCodeEnum presenterCode, final DownloadHandler handler) {
+  	public void downloadPresenter(final PresenterMenuEnum presenterCode, final DownloadHandler handler) {
   		setPresenterName( presenterCode.getPresenterName() );
   		if("br.eng.eliseu.gwt.portalSimples.client.ui.site.CabecalhoPresenter".equals(presenterName) 
   		   || "br.eng.eliseu.gwt.portalSimples.client.ui.site.ContatoPresenter".equals(presenterName) 
@@ -65,7 +65,7 @@ public class PresenterServiceImpl_Manual extends PresenterServiceImpl implements
   			}); 
   		}
   		else { 
-  			handler.failure(new RuntimeException("(Nao e este) -- Não consegui achar o presenter "+getPresenterName()+", verifique o nome em PresenterCodeEnum")); 
+  			handler.failure(new RuntimeException("(Nao e este) -- Não consegui achar o presenter "+getPresenterName()+", verifique o nome em PresenterMenuEnum")); 
   		}
   	}
   

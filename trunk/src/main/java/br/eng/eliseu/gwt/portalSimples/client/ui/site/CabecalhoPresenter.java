@@ -7,7 +7,7 @@ import br.eng.eliseu.gwt.portalSimples.client.event.LogoutEventHandler;
 import br.eng.eliseu.gwt.portalSimples.client.event.PlaceEvent;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.PortalResource;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.BasePresenter;
-import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterCodeEnum;
+import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterMenuEnum;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.view.BaseDisplay;
 import br.eng.eliseu.gwt.portalSimples.client.service.LoginService;
 import br.eng.eliseu.gwt.portalSimples.client.service.LoginServiceAsync;
@@ -50,7 +50,7 @@ public class CabecalhoPresenter extends BasePresenter {
 	        public void onClick(ClickEvent event) {
 	        	// --- Abre a tela de Login
 	    		PlaceEvent eventLogin = new PlaceEvent();
-	    		eventLogin.setState(PresenterCodeEnum.LOGIN);
+	    		eventLogin.setState(PresenterMenuEnum.LOGIN);
 	    		getRecursos().getEventBus().fireEvent(eventLogin);
 
 	        }

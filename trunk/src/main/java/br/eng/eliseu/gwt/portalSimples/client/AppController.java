@@ -4,12 +4,14 @@ import br.eng.eliseu.gwt.portalSimples.client.event.LoginEvent;
 import br.eng.eliseu.gwt.portalSimples.client.event.LoginEventHandler;
 import br.eng.eliseu.gwt.portalSimples.client.event.LogoutEvent;
 import br.eng.eliseu.gwt.portalSimples.client.event.LogoutEventHandler;
+import br.eng.eliseu.gwt.portalSimples.client.event.MainEvent;
+import br.eng.eliseu.gwt.portalSimples.client.event.MainEventHandler;
 import br.eng.eliseu.gwt.portalSimples.client.event.PlaceEvent;
 import br.eng.eliseu.gwt.portalSimples.client.event.PlaceEventHandler;
 import br.eng.eliseu.gwt.portalSimples.client.handle.DownloadHandler;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.PortalResource;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.Presenter;
-import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterCodeEnum;
+import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterMenuEnum;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterService;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.presenter.PresenterServiceImpl;
 import br.eng.eliseu.gwt.portalSimples.client.mvp.view.BaseDisplay;
@@ -45,8 +47,22 @@ public class AppController implements Presenter {
 		getRecursos().getEventBus().addHandler(PlaceEvent.TYPE, new PlaceEventHandler() {
 
 			public void onChangePlace(PlaceEvent event) {
-				PresenterCodeEnum states = event.getState();
+				PresenterMenuEnum states = event.getState();
 				showPresenterCode(states);
+			}
+		});	
+
+		// --- Evento que chama e monta todas as telas CABECALHO, MENU, CENTRO, RODAPE
+		getRecursos().getEventBus().addHandler(MainEvent.TYPE, new MainEventHandler() {
+
+			public void onMainPlace(MainEvent event) {
+				PresenterMenuEnum telaDoCentro = event.getTelaDoCentro();
+				if (telaDoCentro == null) {
+					showPresenterMainAsync(PresenterMenuEnum.HOME);
+				} else {
+					showPresenterMainAsync(telaDoCentro);
+				}
+
 			}
 		});	
 
@@ -56,7 +72,7 @@ public class AppController implements Presenter {
 				// --- Seto null nas variaveis de recursos do sistema
 				getRecursos().setUsrAutentidado(null);
 
-				reconstroiTelaPrincipal();
+				reconstroiMenuAsync(PresenterMenuEnum.HOME);
 				
 			}
 		});	
@@ -68,7 +84,7 @@ public class AppController implements Presenter {
 				// --- Seto o usuario nas variaveis de recursos do sistema
 				getRecursos().setUsrAutentidado(event.getUsuarioVO());
 				
-				reconstroiTelaPrincipal();
+				reconstroiMenuAsync(PresenterMenuEnum.HOME);
 
 			}
 		});	
@@ -94,13 +110,10 @@ public class AppController implements Presenter {
 
 		}
 		
-		getRecursos().getPlaceManager().currentPlace();
-		
-		
 	}
 	
 	
-	private void showPresenterCode(final PresenterCodeEnum s) {
+	private void showPresenterCode(final PresenterMenuEnum s) {
 		
 		presenterViewService.downloadPresenter(s, new DownloadHandler() {
 			
@@ -115,13 +128,92 @@ public class AppController implements Presenter {
 		});
 	}
 
-	private void reconstroiTelaPrincipal() {
-		// --- Reconstruo o Menu e chamo o HOME
-		PlaceEvent placeEvent = new PlaceEvent();
-		placeEvent.setState(PresenterCodeEnum.MENU);
-		getRecursos().getEventBus().fireEvent(placeEvent);
+	/**
+	 * Criei este metodo assim por se tratar de chamadas asincronas e o que estava acontecendo 
+	 * é que a primeira chamada nao tinha erminado entes da proxima comessar, assim 
+	 * a a ultima tela ficava repetida para todas 
+	 */
+	private void showPresenterMainAsync(final PresenterMenuEnum telaDoCentro) {
 		
-		getRecursos().getPlaceManager().newPlace(PresenterCodeEnum.HOME);
+		presenterViewService.downloadPresenter(PresenterMenuEnum.CABECALHO, new DownloadHandler() {
+
+			public void finished(final Presenter presenter) {
+				mainPresenter.getDisplay().showState(presenter, PresenterMenuEnum.CABECALHO);
+				
+				presenterViewService.downloadPresenter(PresenterMenuEnum.MENU, new DownloadHandler() {
+					
+					public void finished(final Presenter presenter) {
+						mainPresenter.getDisplay().showState(presenter, PresenterMenuEnum.MENU);
+						
+						presenterViewService.downloadPresenter(PresenterMenuEnum.RODAPE, new DownloadHandler() {
+					
+							public void finished(final Presenter presenter) {
+								mainPresenter.getDisplay().showState(presenter, PresenterMenuEnum.RODAPE);
+								
+								presenterViewService.downloadPresenter(telaDoCentro, new DownloadHandler() {
+							
+									public void finished(final Presenter presenter) {
+										mainPresenter.getDisplay().showState(presenter, telaDoCentro);
+										getRecursos().getPlaceManager().setaPrimeiraTelaHistorico();
+										
+									}
+
+									public void failure(Throwable error) {
+										System.out.println("Download error: "+error.getMessage()+" ("+telaDoCentro.getNome()+")");
+										error.printStackTrace();
+									}
+								});
+							}
+
+							public void failure(Throwable error) {
+								System.out.println("Download error: "+error.getMessage()+" ("+PresenterMenuEnum.RODAPE.getNome()+")");
+								error.printStackTrace();
+							}
+						});
+					}
+
+					public void failure(Throwable error) {
+						System.out.println("Download error: "+error.getMessage()+" ("+PresenterMenuEnum.MENU.getNome()+")");
+						error.printStackTrace();
+					}
+				});
+			}
+
+			public void failure(Throwable error) {
+				System.out.println("Download error: "+error.getMessage()+" ("+PresenterMenuEnum.CABECALHO.getNome()+")");
+				error.printStackTrace();
+			}
+		});
+	}
+
+	private void reconstroiMenuAsync(final PresenterMenuEnum telaDoCentro) {
+		presenterViewService.downloadPresenter(PresenterMenuEnum.MENU, new DownloadHandler() {
+			
+			public void finished(final Presenter presenter) {
+				mainPresenter.getDisplay().showState(presenter, PresenterMenuEnum.MENU);
+				
+				presenterViewService.downloadPresenter(telaDoCentro, new DownloadHandler() {
+			
+					public void finished(final Presenter presenter) {
+						mainPresenter.getDisplay().showState(presenter, telaDoCentro);
+						getRecursos().getPlaceManager().setaPrimeiraTelaHistorico();
+						
+					}
+
+					public void failure(Throwable error) {
+						System.out.println("Download error: "+error.getMessage()+" ("+telaDoCentro.getNome()+")");
+						error.printStackTrace();
+					}
+				});
+			}
+
+			public void failure(Throwable error) {
+				System.out.println("Download error: "+error.getMessage()+" ("+PresenterMenuEnum.MENU.getNome()+")");
+				error.printStackTrace();
+			}
+		});
+
+	
 	}
 	
 	
